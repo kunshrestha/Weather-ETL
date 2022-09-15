@@ -6,7 +6,7 @@
 
 import requests
 import pandas as pd
-import json
+
 # https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
 def extract(lat = 33.8688, # Sydney
             lon = 151.2093,
