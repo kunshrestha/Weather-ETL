@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[28]:
+# In[1]:
 
 
 import requests
 import pandas as pd
-
+import json
 # https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
 def extract(lat = 33.8688, # Sydney
             lon = 151.2093,
@@ -17,13 +17,7 @@ def extract(lat = 33.8688, # Sydney
     return requests.get(url)
 
 
-# In[34]:
-
-
-weatherjson = extract()
-
-
-# In[141]:
+# In[2]:
 
 
 def transform(jsonrequest):
@@ -77,20 +71,27 @@ def transform(jsonrequest):
     return df
 
 
-# In[144]:
+# In[3]:
 
 
-def load(data):
-    data.to_csv("weather.csv")
+def load(data, filename):
+    data.to_csv(filename)
 
 
-# In[145]:
+# In[5]:
 
 
 def main():
+    weatherjson = extract()
     data = transform(weatherjson)
-    load(data)
+    load(data,"weather.csv")
     
 if __name__ == "__main__":
     main()
+
+
+# In[ ]:
+
+
+
 
