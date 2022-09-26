@@ -13,23 +13,23 @@ from email.utils import COMMASPACE, formatdate
 
 def send_mail(send_from, send_to, subject, body, files=[],
               server="127.0.0.1", port=587, user="", password=""):
-    # This function sends email with or without attachment.
-    # Desable multi level authentication in email server
-    # for it to work.
-    # Currently only csv files are supported to send.
+    """This function sends email with or without attachment.
+    Desable multi level authentication in email server
+    for it to work.
     
-    # Parameters
-    # send_from: str, sender's email address
-    # send_to: str or list or str, receiver's address(es)
-    # subject: str, subject of email
-    # body: str, plain email body
-    # files: str or list of str, file path(s) to send as attachment, default []
-    # server: str, smtp server name, default 127.0.0.1
-    # port: int, smtp port, default 587,
-    # user: str, usually sender's email address
-    # password: str, email password
+    Parameters
+    send_from: str, sender's email address
+    send_to: str or list or str, receiver's address(es)
+    subject: str, subject of email
+    body: str, plain email body
+    files: str or list of str, file path(s) to send as attachment, default []
+    server: str, smtp server name, default 127.0.0.1
+    port: int, smtp port, default 587,
+    user: str, usually sender's email address
+    password: str, email password
 
-    # Returns nothing
+    Returns nothing
+    """
     
     if not isinstance(send_to, list):
         send_to = [send_to]
@@ -48,7 +48,8 @@ def send_mail(send_from, send_to, subject, body, files=[],
         with open(f, "rb") as fil:
             part = MIMEApplication(
                 fil.read(),
-                _subtype="csv",
+                # extract the subtype of the file e.g. .csv, .pdf etc.
+                _subtype=f[f.index("."):],
                 Name=basename(f)
             )
         # After the file is closed
