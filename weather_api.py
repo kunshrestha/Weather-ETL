@@ -21,16 +21,17 @@ def extract_weather(lat = -33.8688, # Sydney
             exclude = ("hourly", "daily"),
             apikey = "*****************"
            ):
-    # Extract 3 hourly weather for next 5 days using following api
-    # https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
-    #
-    # Parameters:
-    # lat: float, lattitude, default -33.8688
-    # lon: float, longitude, default 151.2093
-    # exclude: tuple, do not change the dafault since free account is being used default ("hourly", "daily")
-    # apikey: str, key to use the API
-    #
-    # Returns requests object
+    """Extract 3 hourly weather for next 5 days using following api
+    https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
+    
+    Parameters:
+    lat: float, lattitude, default -33.8688
+    lon: float, longitude, default 151.2093
+    exclude: tuple, do not change the dafault since free account is being used default ("hourly", "daily")
+    apikey: str, key to use the API
+    
+    Returns requests object
+    """
     url = "https://api.openweathermap.org/data/2.5/forecast?lat={0}&lon={1}&appid={2}".format(lat, lon, apikey)
     return requests.get(url)
 
@@ -43,17 +44,19 @@ def extract_latlon(cityname = "sydney",
                   countrycode = "au",
                   limit = 1,
                   apikey = "*****************"):
-    # Extract geocoding information for a place using following api
-    # http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-    #
-    # Parameters:
-    # cityname: str, city name
-    # statecode: str, state code
-    # countrycode: str, country code
-    # limit: int, return city limit if countrycode and statecode is not set where the city name name exists more than once
-    # apikey: str, key to use the API
-    #
-    # Return requests object
+    """Extract geocoding information for a place using following api
+    http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
+    
+    Parameters:
+    cityname: str, city name
+    statecode: str, state code
+    countrycode: str, country code
+    limit: int, return city limit if countrycode and statecode is not set where the city name name exists more than once
+    apikey: str, key to use the API
+    
+    Return requests object
+    """
+
     url = "http://api.openweathermap.org/geo/1.0/direct?q={0},{1},{2}&limit={3}&appid={4}".format(cityname,
                                                                                                  statecode,
                                                                                                  countrycode,
@@ -66,16 +69,17 @@ def extract_latlon(cityname = "sydney",
 
 
 def load_weather(data, filename, db="", db_table=""):
-    # Loads dataframe 'data' into a file and database.
-    # If db or db_table is empty only writes the data to filename.
-    #
-    # Parameters:
-    # data: pandas DataFrame, dataframe to load
-    # filename: str, path of the csv file to save 'data' into
-    # db: str, name of the database
-    # db_table: str, name of the table
-    #
-    # Returns nothing
+    """Loads dataframe 'data' into a file and database.
+    If db or db_table is empty only writes the data to filename.
+    
+    Parameters:
+    data: pandas DataFrame, dataframe to load
+    filename: str, path of the csv file to save 'data' into
+    db: str, name of the database
+    db_table: str, name of the table
+    
+    Returns nothing
+    """
     
     if exists(filename):
         # Checking if their is existing file with the data, concat new data with the existing one.
@@ -127,15 +131,17 @@ def load_weather(data, filename, db="", db_table=""):
 
 
 def msconnect(driver, server, database, trusted_connection="yes"):
-    # Connects to MS SQL server
-    #
-    # Parameters:
-    # driver: str, MS SQL server driver
-    # server: str, server name
-    # database: str, database name
-    # trusted_connection: str, yes/no, default "yes"
-    #
-    # Return pyodb.connect object
+    """Connects to MS SQL server
+    
+    Parameters:
+    driver: str, MS SQL server driver
+    server: str, server name
+    database: str, database name
+    trusted_connection: str, yes/no, default "yes"
+    
+    Return pyodb.connect object
+    """
+
     cnxn_str = ("""
     Driver={%s};
     Server=%s;"#",67800;
@@ -151,12 +157,13 @@ def msconnect(driver, server, database, trusted_connection="yes"):
 
 
 def transform_weather(rawdata):
-    # Transforms raw requests data 'rawdata'
-    #
-    # Parameters:
-    # rawdata: requests object, object of type requests
-    #
-    # Returns pandas.DataFrame
+    """Transforms raw requests data 'rawdata'
+    
+    Parameters:
+    rawdata: requests object, object of type requests
+    
+    Returns pandas.DataFrame
+    """
     
     df = pd.json_normalize(json.loads(rawdata.text),
                           record_path=["list"],
